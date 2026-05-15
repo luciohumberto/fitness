@@ -1,0 +1,52 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+model User {
+  id                    String   @id @default(cuid())
+  email                 String   @unique
+  password_hash         String
+  refresh_token         String?
+  nome                  String
+  altura                Float?
+  peso_inicial          Float?
+  idade                 Int?
+  genero                String?
+  nivel_atividade       String?
+  tipo_ataxia           String?
+  limitacoes_especificas String?
+  nivel_severidade      String?
+  tmb_calculado         Float?
+  fator_atividade       Float?
+  calorias_manutencao   Float?
+  objetivo_principal    String?
+  experiencia_treino    String?
+  pontos_totais         Int      @default(0)
+  nivel_atual           Int      @default(1)
+  streak_atual          Int      @default(0)
+  melhor_streak         Int      @default(0)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  last_sync             DateTime?
+  last_login            DateTime?
+  is_active             Boolean  @default(true)
+  email_verified        Boolean  @default(false)
+  timezone              String?  @default("UTC")
+  unidade_medida        String?  @default("metric")
+  idioma                String?  @default("pt-BR")
+}
+
+model Measurement { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model Goal { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model ExerciseDatabase { id String @id @default(cuid()) name String safety_level String contraindications String? adaptation_notes String? progression_limit Float @default(0.05) media_url String? }
+model Workout { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model WorkoutExercise { id String @id @default(cuid()) workout_id String payload Json }
+model WeeklySchedule { id String @id @default(cuid()) user_id String payload Json }
+model NutritionLog { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model Meal { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model Supplement { id String @id @default(cuid()) name String payload Json }
+model SupplementLog { id String @id @default(cuid()) user_id String supplement_id String payload Json created_at DateTime @default(now()) }
+model UserAchievement { id String @id @default(cuid()) user_id String badge_code String points Int created_at DateTime @default(now()) }
+model BadgeDefinition { id String @id @default(cuid()) code String @unique name String description String points Int }
+model SmartNotification { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model AiAnalysis { id String @id @default(cuid()) user_id String payload Json created_at DateTime @default(now()) }
+model SyncOperation { id String @id @default(cuid()) user_id String operation String payload Json status String created_at DateTime @default(now()) }
